@@ -1,7 +1,7 @@
 {
   "name": "hackmd",
-  "version": "0.1.0",
-  "description": "Official HackMD plugin for Cursor with HackMD MCP setup, CLI skill, and guided setup workflow.",
+  "version": "0.2.0",
+  "description": "Official HackMD plugin for Cursor with HackMD CLI guidance, setup workflow, and note-focused rules.",
   "author": {
     "name": "HackMD"
   },
@@ -10,7 +10,6 @@
   "keywords": [
     "hackmd",
     "cursor",
-    "mcp",
     "notes",
     "documentation"
   ]

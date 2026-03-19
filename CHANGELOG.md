@@ -6,21 +6,8 @@ The format is based on Keep a Changelog, and this project follows Semantic Versi
 
 ## [Unreleased]
 
-### Added
-
-- Initial Cursor plugin scaffold for HackMD
-- Local `logo.png` asset referenced by the plugin manifest
-- `.mcp.json` with HackMD MCP server template and auth placeholder
-- `hackmd-cli` skill adapted for Cursor plugin format
-- `setup-hackmd` command for installation and configuration guidance
-- `hackmd-workflow` rule for note workflow and safe auth handling
-- `README.md` and `LICENSE`
-
 ### Changed
 
-- Pinned `mcp-remote` to `0.1.38` in the MCP template
-- Updated setup guidance to keep real tokens in user-local `~/.cursor/mcp.json` instead of the tracked repository
-- Expanded `README.md` with plugin installation and safer MCP configuration instructions
-- Renamed the plugin MCP template to `.mcp.json` for local plugin auto-discovery
-- Updated plugin manifest metadata to use an `author` object
-- Added local plugin testing instructions using `~/.cursor/plugins/local`
+- Removed plugin-local MCP support and `.mcp.json` from the repository
+- Repositioned the plugin as HackMD CLI guidance plus note workflow helpers
+- Updated setup and README guidance to use CLI-only authentication and verification
