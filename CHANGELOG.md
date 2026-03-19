@@ -15,3 +15,9 @@ The format is based on Keep a Changelog, and this project follows Semantic Versi
 - `setup-hackmd` command for installation and configuration guidance
 - `hackmd-workflow` rule for note workflow and safe auth handling
 - `README.md` and `LICENSE`
+
+### Changed
+
+- Pinned `mcp-remote` to `0.1.38` in the MCP template
+- Updated setup guidance to keep real tokens in user-local `~/.cursor/mcp.json` instead of the tracked repository
+- Expanded `README.md` with plugin installation and safer MCP configuration instructions
