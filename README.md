@@ -5,7 +5,7 @@ Official HackMD plugin scaffold for Cursor.
 This plugin provides:
 
 - A repo-hosted `logo.png` wired into the plugin manifest
-- A ready-to-configure `mcp.json` entry for the HackMD MCP server
+- A ready-to-configure `.mcp.json` entry for the HackMD MCP server
 - A `hackmd-cli` skill adapted for Cursor plugin format
 - A `setup-hackmd` command for local setup and verification
 - A light HackMD workflow rule for note-related tasks
@@ -26,8 +26,28 @@ This plugin provides:
 ├── LICENSE
 ├── logo.png
 ├── README.md
-└── mcp.json
+└── .mcp.json
 ```
+
+## Local Testing
+
+For day-to-day testing, symlink this repo into Cursor's local plugin directory:
+
+```bash
+mkdir -p ~/.cursor/plugins/local
+ln -s /Users/yukai/Projects/HackMD/cursor-plugin ~/.cursor/plugins/local/hackmd
+```
+
+Then fully reload Cursor and verify:
+
+- the `hackmd` plugin appears in the local plugin list
+- `logo.png` renders correctly
+- the `hackmd-cli` skill is available
+- the `setup-hackmd` command is available
+- the `hackmd-workflow` rule is discoverable
+- the `.mcp.json` template is available for plugin MCP configuration in Cursor builds that support plugin MCP auto-discovery
+
+If you prefer an install-artifact style test, copy the repo instead of symlinking it.
 
 ## Setup
 
@@ -47,9 +67,11 @@ Do not store a real token in this tracked repository file.
 
 Instead:
 
-1. Copy the `hackmd-mcp` entry from this repo's `mcp.json`
+1. Copy the `hackmd-mcp` entry from this repo's `.mcp.json`
 2. Paste it into your user-level Cursor MCP config at `~/.cursor/mcp.json`
 3. Replace the placeholder there, in your local user config only
+
+This repository also includes a plugin-local `.mcp.json` template for local testing and packaging.
 
 Example user-local config:
 
@@ -134,7 +156,7 @@ Use this rule for HackMD-related work so Cursor prefers the HackMD CLI workflow,
 ## Notes
 
 - The plugin manifest references the local `logo.png` asset.
-- The repo `mcp.json` is a template with a placeholder token and a pinned `mcp-remote` version.
+- The repo `.mcp.json` is a template with a placeholder token and a pinned `mcp-remote` version.
 - Users should place real secrets only in their local `~/.cursor/mcp.json`, not in this repository.
 - The plugin keeps scope narrow so it can be extended safely later.
 - The `hackmd-cli` skill adapts the upstream HackMD CLI guide for Cursor plugin packaging.
