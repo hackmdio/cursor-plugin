@@ -1,0 +1,14 @@
+{
+  "name": "hackmd",
+  "version": "0.1.0",
+  "description": "Official HackMD plugin for Cursor with HackMD MCP setup, CLI skill, and guided setup workflow.",
+  "author": "HackMD",
+  "license": "MIT",
+  "keywords": [
+    "hackmd",
+    "cursor",
+    "mcp",
+    "notes",
+    "documentation"
+  ]
+}

@@ -1,0 +1,14 @@
+---
+description: Prefer HackMD CLI and safe auth handling for HackMD-related note workflows.
+alwaysApply: false
+---
+
+# HackMD workflow
+
+When helping with HackMD tasks:
+
+1. Prefer the `hackmd-cli` skill for creating, updating, exporting, and automating notes.
+2. Distinguish personal notes (`hackmd-cli notes`) from team notes (`hackmd-cli team-notes --teamPath=...`).
+3. Recommend `hackmd-cli login` or environment variables instead of embedding secrets directly in commands.
+4. Keep token examples as placeholders in docs and configuration samples.
+5. When scripting or inspection is needed, prefer machine-readable output such as `--output=json`.
