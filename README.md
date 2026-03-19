@@ -4,6 +4,7 @@ Official HackMD plugin scaffold for Cursor.
 
 This plugin provides:
 
+- A repo-hosted `logo.png` wired into the plugin manifest
 - A ready-to-configure `mcp.json` entry for the HackMD MCP server
 - A `hackmd-cli` skill adapted for Cursor plugin format
 - A `setup-hackmd` command for local setup and verification
@@ -23,6 +24,7 @@ This plugin provides:
 │   └── hackmd-cli/
 │       └── SKILL.md
 ├── LICENSE
+├── logo.png
 ├── README.md
 └── mcp.json
 ```
@@ -92,6 +94,7 @@ Use this rule for HackMD-related work so Cursor prefers the HackMD CLI workflow,
 
 ## Notes
 
+- The plugin manifest references the local `logo.png` asset.
 - The MCP config intentionally ships with a placeholder token.
 - The plugin keeps scope narrow so it can be extended safely later.
 - The `hackmd-cli` skill adapts the upstream HackMD CLI guide for Cursor plugin packaging.
