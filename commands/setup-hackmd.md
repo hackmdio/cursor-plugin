@@ -32,7 +32,7 @@ export HMD_API_ACCESS_TOKEN=YOUR_TOKEN
 export HMD_API_ENDPOINT_URL=https://your.hackmd-ee.endpoint
 ```
 
-1. Copy the `hackmd-mcp` entry from the plugin `mcp.json` into the user's local Cursor MCP config at `~/.cursor/mcp.json`.
+1. Copy the `hackmd-mcp` entry from the plugin `.mcp.json` into the user's local Cursor MCP config at `~/.cursor/mcp.json`.
 1. Use a final local config shaped like:
 
 ```json
