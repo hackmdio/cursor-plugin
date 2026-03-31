@@ -33,7 +33,7 @@ export HMD_API_ENDPOINT_URL=https://your.hackmd-ee.endpoint
 ```
 
 1. Copy the `hackmd-mcp` entry from the plugin `.mcp.json` into the user's local Cursor MCP config at `~/.cursor/mcp.json`.
-1. Use a final local config shaped like:
+1. Use a local config shaped like this (no token in the file; Cursor resolves `${env:HMD_API_ACCESS_TOKEN}`):
 
 ```json
 {
@@ -44,23 +44,14 @@ export HMD_API_ENDPOINT_URL=https://your.hackmd-ee.endpoint
         "mcp-remote@0.1.38",
         "https://mcp.hackmd.io/",
         "--header",
-        "Authorization:${AUTH_HEADER}"
-      ],
-      "env": {
-        "AUTH_HEADER": "Bearer YOUR_REAL_HACKMD_TOKEN"
-      }
+        "Authorization:Bearer ${env:HMD_API_ACCESS_TOKEN}"
+      ]
     }
   }
 }
 ```
 
-1. Replace:
-
-```text
-Bearer <HACKMD_API_TOKEN>
-```
-
-with the correct bearer token value in `~/.cursor/mcp.json`, not in the tracked plugin repository.
+1. Ensure `HMD_API_ACCESS_TOKEN` is set in the environment Cursor uses (same as CLI), not inside `mcp.json`. Prefer a shell profile or OS user environment so Cursor inherits the variable on launch; `${env:...}` in `mcp.json` only references that external value.
 
 1. Verify CLI access:
 

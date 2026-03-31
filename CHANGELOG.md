@@ -11,7 +11,7 @@ The format is based on Keep a Changelog, and this project follows Semantic Versi
 ### Added
 
 - Cursor plugin manifest (`plugin.json`) and `logo.png`
-- `.mcp.json` template for `hackmd-mcp` (`mcp-remote@0.1.38`, `https://mcp.hackmd.io/`); use placeholders in-repo and real tokens only in `~/.cursor/mcp.json`
+- `.mcp.json` template for `hackmd-mcp` (`mcp-remote@0.1.38`, `https://mcp.hackmd.io/`) with `Authorization:Bearer ${env:HMD_API_ACCESS_TOKEN}` (Cursor env interpolation; tokens stay in the environment)
 - `hackmd-cli` skill, `setup-hackmd` command, and `hackmd-workflow` rule
 - README with MCP and CLI setup, and local testing via `~/.cursor/plugins/local`
 - `LICENSE`
