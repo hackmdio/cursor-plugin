@@ -31,29 +31,43 @@ This plugin provides:
 
 ## Local Testing
 
-For day-to-day testing, symlink this repo into Cursor's local plugin directory:
+Cursor loads plugins from `~/.cursor/plugins/local/<plugin-name>/`. The folder name should match the `name` field in `.cursor-plugin/plugin.json` (this repo: `hackmd`).
+
+**Recommended:** copy or sync the repo into that path (avoids symlink issues some builds have):
 
 ```bash
 mkdir -p ~/.cursor/plugins/local
-ln -s "$(pwd)" ~/.cursor/plugins/local/hackmd
+rm -rf ~/.cursor/plugins/local/hackmd
+rsync -a --delete --exclude='.git' ./ ~/.cursor/plugins/local/hackmd/
 ```
 
-Then fully reload Cursor and verify:
+From anywhere, using an absolute path to your clone:
+
+```bash
+rsync -a --delete --exclude='.git' /path/to/cursor-plugin/ ~/.cursor/plugins/local/hackmd/
+```
+
+**Alternative:** symlink instead of copying:
+
+```bash
+mkdir -p ~/.cursor/plugins/local
+ln -sfn "$(pwd)" ~/.cursor/plugins/local/hackmd
+```
+
+Quit Cursor completely and reopen it (a window reload is not always enough). Then verify:
 
 - the `hackmd` plugin appears in the local plugin list
 - `logo.png` renders correctly
 - the `hackmd-cli` skill is available
 - the `setup-hackmd` command is available
 - the `hackmd-workflow` rule is discoverable
-- the `.mcp.json` template is available for plugin MCP configuration in Cursor builds that support plugin MCP auto-discovery
-
-If you prefer an install-artifact style test, copy the repo instead of symlinking it.
+- the `.mcp.json` template is at the repo root for merging into your user MCP config (see [Setup](#2-configure-hackmd-mcp-safely))
 
 ## Setup
 
 ### 1. Install the plugin in Cursor
 
-Use this repository as the plugin source in Cursor, or copy the plugin files into a local plugin directory for testing and publishing workflows.
+Use this repository as the plugin source in Cursor, or sync it into `~/.cursor/plugins/local/hackmd/` as in [Local Testing](#local-testing).
 
 The plugin entrypoint is:
 

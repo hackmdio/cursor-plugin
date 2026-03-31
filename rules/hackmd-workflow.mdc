@@ -12,3 +12,5 @@ When helping with HackMD tasks:
 3. Recommend `hackmd-cli login` or environment variables instead of embedding secrets directly in commands.
 4. Keep token examples as placeholders in docs and configuration samples.
 5. When scripting or inspection is needed, prefer machine-readable output such as `--output=json`.
+6. **Verify login before API-backed CLI work** (listing or mutating notes, teams, history, export): run `hackmd-cli whoami`. If it errors or shows no user, have the user run `hackmd-cli login` or set `HMD_API_ACCESS_TOKEN` (and `HMD_API_ENDPOINT_URL` for HackMD EE), then re-run `whoami`.
+7. **Optional `whoami` output tuning** (same table-style flags as other list commands): `--output=json|yaml|csv` for parsing; `-x` / `--extended` for extra columns; `--columns=...`, `--filter=...`, `--sort=...`, `--no-header`, `--no-truncate` as needed.

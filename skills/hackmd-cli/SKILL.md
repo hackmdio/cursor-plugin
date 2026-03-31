@@ -54,6 +54,8 @@ hackmd-cli logout
 hackmd-cli whoami
 ```
 
+Use `hackmd-cli whoami` to confirm the CLI can reach HackMD with current credentials (interactive login or `HMD_API_ACCESS_TOKEN`). For scripts or agents, prefer `hackmd-cli whoami --output=json`. Other useful flags: `-x` (`--extended`), `--columns=...`, `--filter=...`, `--sort=...`, `--no-header`, `--no-truncate` (see `hackmd-cli whoami --help`).
+
 ### Personal Notes
 
 ```bash
