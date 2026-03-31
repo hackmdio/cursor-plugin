@@ -6,8 +6,12 @@ The format is based on Keep a Changelog, and this project follows Semantic Versi
 
 ## [Unreleased]
 
-### Changed
+## [0.1.0] - 2026-03-31
 
-- Removed plugin-local MCP support and `.mcp.json` from the repository
-- Repositioned the plugin as HackMD CLI guidance plus note workflow helpers
-- Updated setup and README guidance to use CLI-only authentication and verification
+### Added
+
+- Cursor plugin manifest (`plugin.json`) and `logo.png`
+- `.mcp.json` template for `hackmd-mcp` (`mcp-remote@0.1.38`, `https://mcp.hackmd.io/`); use placeholders in-repo and real tokens only in `~/.cursor/mcp.json`
+- `hackmd-cli` skill, `setup-hackmd` command, and `hackmd-workflow` rule
+- README with MCP and CLI setup, and local testing via `~/.cursor/plugins/local`
+- `LICENSE`
