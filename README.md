@@ -63,17 +63,14 @@ The plugin entrypoint is:
 
 ### 2. Configure HackMD MCP safely
 
-Do not store a real token in this tracked repository file.
-
-Instead:
+Do not put API tokens inside `mcp.json`. In Cursor, `mcp.json` values support interpolation: strings like `${env:VAR}` are resolved from your environment when MCP loads.
 
 1. Copy the `hackmd-mcp` entry from this repo's `.mcp.json`
-2. Paste it into your user-level Cursor MCP config at `~/.cursor/mcp.json`
-3. Replace the placeholder there, in your local user config only
+2. Paste it into your user-level Cursor MCP config at `~/.cursor/mcp.json` (or merge into an existing file)
 
-This repository also includes a plugin-local `.mcp.json` template for local testing and packaging.
+The header uses the same variable as the HackMD CLI: `HMD_API_ACCESS_TOKEN`.
 
-Example user-local config:
+Example (no secrets in the file):
 
 ```json
 {
@@ -84,28 +81,20 @@ Example user-local config:
         "mcp-remote@0.1.38",
         "https://mcp.hackmd.io/",
         "--header",
-        "Authorization:${AUTH_HEADER}"
-      ],
-      "env": {
-        "AUTH_HEADER": "Bearer YOUR_REAL_HACKMD_TOKEN"
-      }
+        "Authorization:Bearer ${env:HMD_API_ACCESS_TOKEN}"
+      ]
     }
   }
 }
 ```
 
-Replace:
+Cursor resolves `${env:HMD_API_ACCESS_TOKEN}` from the environment it inherits when it starts (not from secrets embedded in `mcp.json`). Set the variable in your **shell profile** (for example `~/.zshrc` or `~/.bashrc`) and fully restart Cursor, or define it in your **OS user / system environment** so GUI-launched Cursor sees it—same idea as Cursor’s MCP docs: use config interpolation in `mcp.json` and keep real values in the environment. Use the same token as in [Configure HackMD CLI authentication](#4-configure-hackmd-cli-authentication) below.
 
-```text
-Bearer <HACKMD_API_TOKEN>
-```
-
-with your real HackMD API bearer token in `~/.cursor/mcp.json`.
-
-The default MCP server uses:
+To sanity-check the remote command from a terminal (shell variable, not Cursor interpolation):
 
 ```bash
-npx mcp-remote@0.1.38 https://mcp.hackmd.io/ --header "Authorization:${AUTH_HEADER}"
+export HMD_API_ACCESS_TOKEN=YOUR_TOKEN
+npx mcp-remote@0.1.38 https://mcp.hackmd.io/ --header "Authorization:Bearer $HMD_API_ACCESS_TOKEN"
 ```
 
 ### 3. Install HackMD CLI
@@ -165,8 +154,8 @@ Use this rule for HackMD-related work so Cursor prefers the HackMD CLI workflow,
 ## Notes
 
 - The plugin manifest references the local `logo.png` asset.
-- The repo `.mcp.json` is a template with a placeholder token and a pinned `mcp-remote` version.
-- Users should place real secrets only in their local `~/.cursor/mcp.json`, not in this repository.
+- The repo `.mcp.json` is a template with `${env:HMD_API_ACCESS_TOKEN}` interpolation and a pinned `mcp-remote` version.
+- Keep tokens in the environment, not in committed or pasted config files.
 - The plugin keeps scope narrow so it can be extended safely later.
 - The `hackmd-cli` skill adapts the upstream HackMD CLI guide for Cursor plugin packaging.
 

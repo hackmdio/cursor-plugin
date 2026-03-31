@@ -6,11 +6,8 @@
         "mcp-remote@0.1.38",
         "https://mcp.hackmd.io/",
         "--header",
-        "Authorization:${AUTH_HEADER}"
-      ],
-      "env": {
-        "AUTH_HEADER": "Bearer <HACKMD_API_TOKEN>"
-      }
+        "Authorization:Bearer ${env:HMD_API_ACCESS_TOKEN}"
+      ]
     }
   }
 }
