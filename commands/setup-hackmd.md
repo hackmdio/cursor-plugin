@@ -1,70 +1,41 @@
 ---
 name: setup-hackmd
-description: Guide HackMD plugin setup, including CLI install, auth configuration, safe local MCP setup, and basic verification.
+description: Guide HackMD plugin setup, including OAuth MCP, optional CLI install, and basic verification.
 ---
 
 # Setup HackMD
 
-Help the user set up HackMD tooling in Cursor using this sequence:
+Help the user set up HackMD tooling in Cursor using this sequence.
 
-1. Confirm whether they need HackMD Cloud or HackMD EE setup.
-1. Install the CLI if needed:
+The MCP server (`mcp.hackmd.io`) authenticates with **OAuth 2.1**. The CLI continues to use interactive login or a personal API token. The two are independent — connecting MCP does not replace CLI credentials.
 
-```bash
-npm install -g @hackmd/hackmd-cli
-```
-
-1. Configure CLI auth with either:
-
-```bash
-hackmd-cli login
-```
-
-or:
-
-```bash
-export HMD_API_ACCESS_TOKEN=YOUR_TOKEN
-```
-
-1. If they use HackMD EE, also configure:
-
-```bash
-export HMD_API_ENDPOINT_URL=https://your.hackmd-ee.endpoint
-```
-
-1. Copy the `hackmd-mcp` entry from the plugin `.mcp.json` into the user's local Cursor MCP config at `~/.cursor/mcp.json`.
-1. Use a local config shaped like this (no token in the file; Cursor resolves `${env:HMD_API_ACCESS_TOKEN}`):
+1. Confirm they have a HackMD account at [hackmd.io](https://hackmd.io).
+2. Confirm the plugin is installed (this repo, or synced to `~/.cursor/plugins/local/hackmd/`).
+3. Merge the plugin `.mcp.json` into the user's Cursor MCP config at `~/.cursor/mcp.json` (or confirm Cursor already loaded the plugin's MCP entry):
 
 ```json
 {
   "mcpServers": {
-    "hackmd-mcp": {
-      "command": "npx",
-      "args": [
-        "mcp-remote@0.1.38",
-        "https://mcp.hackmd.io/",
-        "--header",
-        "Authorization:Bearer ${env:HMD_API_ACCESS_TOKEN}"
-      ]
+    "hackmd": {
+      "url": "https://mcp.hackmd.io/"
     }
   }
 }
 ```
 
-1. Ensure `HMD_API_ACCESS_TOKEN` is set in the environment Cursor uses (same as CLI), not inside `mcp.json`. Prefer a shell profile or OS user environment so Cursor inherits the variable on launch; `${env:...}` in `mcp.json` only references that external value.
+Do **not** add `mcp-remote`, `Authorization` headers, or API tokens to this MCP config. MCP does not use `HMD_API_ACCESS_TOKEN`.
 
-1. Verify CLI access:
+4. Fully quit and reopen Cursor (a window reload is not enough).
+5. Ask Cursor to list HackMD notes (or call any HackMD MCP tool). Complete the browser OAuth prompt. Closing it leaves the client unauthorized.
+6. Optional: install the CLI for shell workflows (not required for MCP):
 
 ```bash
+npm install -g @hackmd/hackmd-cli
+hackmd-cli login
 hackmd-cli whoami
-hackmd-cli notes
 ```
 
-1. Verify the MCP setup by confirming Cursor can see the configured `hackmd-mcp` server from the user's local MCP configuration.
-1. If the user is scripting or automating content:
+`hackmd-cli login` is enough for most people. An API token is only for CLI/REST, never for MCP.
 
-- use `hackmd-cli notes` for personal notes
-- use `hackmd-cli team-notes` for team content
-- use JSON output for automation
-
-1. Never paste real secrets into docs, examples, commits, screenshots, or tracked plugin files.
+7. Verify MCP: the `hackmd` server appears in Cursor's MCP list, and a tool call succeeds after OAuth.
+8. Never paste real secrets into docs, examples, commits, screenshots, or tracked plugin files.

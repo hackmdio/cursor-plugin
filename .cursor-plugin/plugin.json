@@ -1,7 +1,7 @@
 {
   "name": "hackmd",
-  "version": "0.1.0",
-  "description": "Official HackMD plugin for Cursor with HackMD MCP setup, CLI skill, and guided setup workflow.",
+  "version": "0.2.0",
+  "description": "Official HackMD plugin for Cursor. Connects to HackMD through OAuth MCP; no API token for MCP.",
   "author": {
     "name": "HackMD"
   },
@@ -11,6 +11,7 @@
     "hackmd",
     "cursor",
     "mcp",
+    "oauth",
     "notes",
     "documentation"
   ]

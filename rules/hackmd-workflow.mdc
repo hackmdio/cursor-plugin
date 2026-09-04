@@ -1,5 +1,5 @@
 ---
-description: Prefer HackMD CLI and safe auth handling for HackMD-related note workflows.
+description: Prefer HackMD MCP OAuth for chat-native note work; keep CLI credentials off the MCP path.
 alwaysApply: false
 ---
 
@@ -7,10 +7,11 @@ alwaysApply: false
 
 When helping with HackMD tasks:
 
-1. Prefer the `hackmd-cli` skill for creating, updating, exporting, and automating notes.
-2. Distinguish personal notes (`hackmd-cli notes`) from team notes (`hackmd-cli team-notes --teamPath=...`).
-3. Recommend `hackmd-cli login` or environment variables instead of embedding secrets directly in commands.
-4. Keep token examples as placeholders in docs and configuration samples.
-5. When scripting or inspection is needed, prefer machine-readable output such as `--output=json`.
-6. **Verify login before API-backed CLI work** (listing or mutating notes, teams, history, export): run `hackmd-cli whoami`. If it errors or shows no user, have the user run `hackmd-cli login` or set `HMD_API_ACCESS_TOKEN` (and `HMD_API_ENDPOINT_URL` for HackMD EE), then re-run `whoami`.
-7. **Optional `whoami` output tuning** (same table-style flags as other list commands): `--output=json|yaml|csv` for parsing; `-x` / `--extended` for extra columns; `--columns=...`, `--filter=...`, `--sort=...`, `--no-header`, `--no-truncate` as needed.
+1. Prefer HackMD MCP (`https://mcp.hackmd.io/`) for reading and writing notes inside Cursor. Auth is OAuth in the browser — do not ask the user for an API token to connect MCP, and do not add `mcp-remote` or `Authorization: Bearer` to MCP config.
+2. Prefer the `hackmd-cli` skill only for shell scripting, export, or EE endpoint work that MCP does not cover.
+3. Distinguish personal notes from team notes (MCP team tools, or `hackmd-cli team-notes --teamPath=...`).
+4. CLI credentials (`hackmd-cli login` or `HMD_API_ACCESS_TOKEN`) are independent of MCP OAuth. Do not copy a CLI token into `.mcp.json`.
+5. Keep any CLI token examples as placeholders. Never commit real secrets.
+6. When scripting the CLI, prefer machine-readable output such as `--output=json`.
+7. **Verify MCP before chat-native note work:** the `hackmd` server should be present and OAuth completed. If tools return unauthorized, re-run the browser OAuth flow — do not fall back to pasting an API token into MCP config.
+8. **Verify CLI before API-backed CLI work:** run `hackmd-cli whoami`. If it errors, have the user run `hackmd-cli login` (or set `HMD_API_ACCESS_TOKEN` and, for HackMD EE, `HMD_API_ENDPOINT_URL`), then re-run `whoami`.

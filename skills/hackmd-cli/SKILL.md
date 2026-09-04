@@ -5,7 +5,7 @@ description: Use HackMD CLI to create, read, update, delete, export, and automat
 
 # HackMD CLI
 
-Use this skill when a user wants to manage HackMD content programmatically from Cursor.
+Use this skill when a user wants to manage HackMD content from the **CLI** (shell, scripts, export). Chat-native read/write in Cursor should use HackMD MCP at `https://mcp.hackmd.io/` with **OAuth** — not this token, and not `mcp-remote`.
 
 ## What This Skill Covers
 
