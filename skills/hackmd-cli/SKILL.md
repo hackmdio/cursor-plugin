@@ -5,7 +5,7 @@ description: Use HackMD CLI to create, read, update, delete, export, and automat
 
 # HackMD CLI
 
-Use this skill when a user wants to manage HackMD content programmatically from Cursor.
+Use this skill when a user wants to manage HackMD content from the shell (scripts, exports, automation). For in-chat note work, the plugin's HackMD MCP server (`https://mcp.hackmd.io/`, OAuth sign-in) is usually simpler. The CLI token and MCP OAuth are separate credentials.
 
 ## What This Skill Covers
 

@@ -1,16 +1,19 @@
 {
   "name": "hackmd",
-  "version": "0.1.0",
-  "description": "Official HackMD plugin for Cursor with HackMD MCP setup, CLI skill, and guided setup workflow.",
+  "version": "0.2.0",
+  "description": "Official HackMD plugin for Cursor: connects the HackMD MCP server (remote, OAuth sign-in) and adds a HackMD CLI skill, setup command, and workflow rule.",
   "author": {
     "name": "HackMD"
   },
+  "homepage": "https://hackmd.io",
+  "repository": "https://github.com/hackmdio/cursor-plugin",
   "license": "MIT",
   "logo": "logo.png",
   "keywords": [
     "hackmd",
     "cursor",
     "mcp",
+    "oauth",
     "notes",
     "documentation"
   ]
