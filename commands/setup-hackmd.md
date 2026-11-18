@@ -9,7 +9,7 @@ Help the user set up HackMD in Cursor by following these steps.
 
 The plugin ships an MCP server (`mcp.json` → `https://mcp.hackmd.io/`) that signs in with **OAuth** in the browser. The HackMD CLI has its own login (interactive login or a personal API token). The two are separate, and connecting MCP doesn't replace CLI credentials.
 
-1. Confirm the user has a HackMD account at [hackmd.io](https://hackmd.io), and ask whether they use HackMD Cloud or HackMD EE.
+1. Confirm the user has a HackMD account at [hackmd.io](https://hackmd.io), and ask whether they use HackMD Cloud or HackMD EE. The bundled MCP server signs in to HackMD Cloud (hackmd.io). For EE, use the CLI with `HMD_API_ENDPOINT_URL` (step 7).
 1. Confirm the plugin is installed: from the Cursor Marketplace, or copied into `~/.cursor/plugins/local/hackmd/` for local testing. A symlink to a clone elsewhere is skipped.
 1. In **Customize**, confirm the HackMD MCP server from the plugin (`plugin-hackmd-hackmd`) is listed and turned on. Users don't need to copy anything into `~/.cursor/mcp.json`.
 1. Call the `get-me` tool, or ask to list HackMD notes, to start the browser OAuth prompt. The user must sign in and approve. Closing the prompt leaves the server unauthorized.

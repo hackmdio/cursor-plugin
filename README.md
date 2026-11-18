@@ -11,6 +11,8 @@ The plugin includes:
 - **Command** `setup-hackmd`: walks you through setup and checks that it works
 - **Rule** `hackmd-workflow`: guidance for HackMD note tasks, including keeping credentials safe
 
+Links:
+
 - Homepage: <https://hackmd.io>
 - Source: <https://github.com/hackmdio/cursor-plugin>
 - [HackMD Terms of Service](https://hackmd.io/s/terms)
@@ -61,6 +63,8 @@ Cursor names plugin MCP servers with a `plugin-` prefix, so this one appears as 
 3. When Cursor opens the HackMD sign-in page in your browser, sign in and approve access. If you close that page without approving, the server stays unauthorized.
 
 The OAuth connection doesn't use an API token. Don't add `Authorization` headers, `mcp-remote`, or `HMD_API_ACCESS_TOKEN` to the plugin's MCP config.
+
+The bundled server signs in to HackMD Cloud (hackmd.io). For a HackMD EE instance, use the [HackMD CLI](#hackmd-cli-optional) with `HMD_API_ENDPOINT_URL`.
 
 More detail: [HackMD MCP Server Setup](https://hackmd.io/@docs/mcp-server-setup).
 
