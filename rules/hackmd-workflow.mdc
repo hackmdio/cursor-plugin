@@ -1,5 +1,5 @@
 ---
-description: Prefer HackMD CLI and safe auth handling for HackMD-related note workflows.
+description: Prefer HackMD MCP (OAuth) for in-chat note work, the HackMD CLI for shell workflows, and keep credentials out of MCP config and committed files.
 alwaysApply: false
 ---
 
@@ -7,10 +7,12 @@ alwaysApply: false
 
 When helping with HackMD tasks:
 
-1. Prefer the `hackmd-cli` skill for creating, updating, exporting, and automating notes.
-2. Distinguish personal notes (`hackmd-cli notes`) from team notes (`hackmd-cli team-notes --teamPath=...`).
-3. Recommend `hackmd-cli login` or environment variables instead of embedding secrets directly in commands.
-4. Keep token examples as placeholders in docs and configuration samples.
-5. When scripting or inspection is needed, prefer machine-readable output such as `--output=json`.
-6. **Verify login before API-backed CLI work** (listing or mutating notes, teams, history, export): run `hackmd-cli whoami`. If it errors or shows no user, have the user run `hackmd-cli login` or set `HMD_API_ACCESS_TOKEN` (and `HMD_API_ENDPOINT_URL` for HackMD EE), then re-run `whoami`.
-7. **Optional `whoami` output tuning** (same table-style flags as other list commands): `--output=json|yaml|csv` for parsing; `-x` / `--extended` for extra columns; `--columns=...`, `--filter=...`, `--sort=...`, `--no-header`, `--no-truncate` as needed.
+1. For reading and writing notes inside Cursor, prefer the plugin's HackMD MCP server (`https://mcp.hackmd.io/`). It signs in with OAuth in the browser. Don't ask the user for an API token to connect MCP, and don't add `mcp-remote` or `Authorization: Bearer` to the plugin's MCP config.
+2. Before in-chat note work, check that MCP works with `get-me`. If tools return unauthorized, have the user complete the browser OAuth prompt again.
+3. Use the `hackmd-cli` skill for shell scripting, exports, or HackMD EE endpoint work.
+4. Tell personal notes apart from team notes (MCP team tools, or `hackmd-cli team-notes --teamPath=...`).
+5. CLI credentials (`hackmd-cli login` or `HMD_API_ACCESS_TOKEN`) are separate from MCP OAuth. Never put a literal token in any MCP config. The only token-based MCP option is the README's manual setup in the user's own `~/.cursor/mcp.json`, which reads the token with `${env:HMD_API_ACCESS_TOKEN}`. Suggest it only when OAuth isn't possible.
+6. Keep token examples as placeholders in docs and configuration samples. Never commit real secrets.
+7. When scripting the CLI, prefer machine-readable output such as `--output=json`.
+8. **Verify login before API-backed CLI work** (listing or changing notes, teams, history, export): run `hackmd-cli whoami`. If it errors or shows no user, have the user run `hackmd-cli login` or set `HMD_API_ACCESS_TOKEN` (and `HMD_API_ENDPOINT_URL` for HackMD EE), then run `whoami` again.
+9. **Optional `whoami` output flags** (the same table flags as other list commands): `--output=json|yaml|csv` for parsing, `-x` / `--extended` for extra columns, and `--columns=...`, `--filter=...`, `--sort=...`, `--no-header`, `--no-truncate` as needed.

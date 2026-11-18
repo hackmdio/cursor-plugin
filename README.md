@@ -1,14 +1,22 @@
 # HackMD Cursor Plugin
 
-Official HackMD plugin scaffold for Cursor.
+The official HackMD plugin for Cursor.
 
-This plugin provides:
+When you install the plugin, Cursor connects to the HackMD MCP server at `https://mcp.hackmd.io/`. You sign in to HackMD in your browser with OAuth, so you don't need an API token.
 
-- A repo-hosted `logo.png` wired into the plugin manifest
-- A ready-to-configure `.mcp.json` entry for the HackMD MCP server
-- A `hackmd-cli` skill adapted for Cursor plugin format
-- A `setup-hackmd` command for local setup and verification
-- A light HackMD workflow rule for note-related tasks
+The plugin includes:
+
+- **MCP server** (`mcp.json`): the remote HackMD MCP server, which uses OAuth sign-in
+- **Skill** `hackmd-cli`: manage personal and team notes from the shell with the HackMD CLI
+- **Command** `setup-hackmd`: walks you through setup and checks that it works
+- **Rule** `hackmd-workflow`: guidance for HackMD note tasks, including keeping credentials safe
+
+Links:
+
+- Homepage: <https://hackmd.io>
+- Source: <https://github.com/hackmdio/cursor-plugin>
+- [HackMD Terms of Service](https://hackmd.io/s/terms)
+- [HackMD Privacy Policy](https://hackmd.io/s/privacy)
 
 ## Repository Layout
 
@@ -23,112 +31,124 @@ This plugin provides:
 ├── skills/
 │   └── hackmd-cli/
 │       └── SKILL.md
+├── mcp.json
+├── CHANGELOG.md
 ├── LICENSE
 ├── logo.png
-├── README.md
-└── .mcp.json
+└── README.md
 ```
 
-## Local Testing
+## Install
 
-Cursor loads plugins from `~/.cursor/plugins/local/<plugin-name>/`. The folder name should match the `name` field in `.cursor-plugin/plugin.json` (this repo: `hackmd`).
+Install **HackMD** from the [Cursor Marketplace](https://cursor.com/marketplace), or from **Customize** in Cursor, once the plugin is listed there. To install it from this repository instead, see [Local Testing](#local-testing).
 
-**Recommended:** copy or sync the repo into that path (avoids symlink issues some builds have):
+## Connect HackMD MCP (OAuth)
 
-```bash
-mkdir -p ~/.cursor/plugins/local
-rm -rf ~/.cursor/plugins/local/hackmd
-rsync -a --delete --exclude='.git' ./ ~/.cursor/plugins/local/hackmd/
-```
-
-From anywhere, using an absolute path to your clone:
-
-```bash
-rsync -a --delete --exclude='.git' /path/to/cursor-plugin/ ~/.cursor/plugins/local/hackmd/
-```
-
-**Alternative:** symlink instead of copying:
-
-```bash
-mkdir -p ~/.cursor/plugins/local
-ln -sfn "$(pwd)" ~/.cursor/plugins/local/hackmd
-```
-
-Quit Cursor completely and reopen it (a window reload is not always enough). Then verify:
-
-- the `hackmd` plugin appears in the local plugin list
-- `logo.png` renders correctly
-- the `hackmd-cli` skill is available
-- the `setup-hackmd` command is available
-- the `hackmd-workflow` rule is discoverable
-- the `.mcp.json` template is at the repo root for merging into your user MCP config (see [Setup](#2-configure-hackmd-mcp-safely))
-
-## Setup
-
-### 1. Install the plugin in Cursor
-
-Use this repository as the plugin source in Cursor, or sync it into `~/.cursor/plugins/local/hackmd/` as in [Local Testing](#local-testing).
-
-The plugin entrypoint is:
-
-```text
-.cursor-plugin/plugin.json
-```
-
-### 2. Configure HackMD MCP safely
-
-Do not put API tokens inside `mcp.json`. In Cursor, `mcp.json` values support interpolation: strings like `${env:VAR}` are resolved from your environment when MCP loads.
-
-1. Copy the `hackmd-mcp` entry from this repo's `.mcp.json`
-2. Paste it into your user-level Cursor MCP config at `~/.cursor/mcp.json` (or merge into an existing file)
-
-The header uses the same variable as the HackMD CLI: `HMD_API_ACCESS_TOKEN`.
-
-Example (no secrets in the file):
+The plugin's `mcp.json` registers this server:
 
 ```json
 {
   "mcpServers": {
-    "hackmd-mcp": {
-      "command": "npx",
-      "args": [
-        "mcp-remote@0.1.38",
-        "https://mcp.hackmd.io/",
-        "--header",
-        "Authorization:Bearer ${env:HMD_API_ACCESS_TOKEN}"
-      ]
+    "hackmd": {
+      "url": "https://mcp.hackmd.io/"
     }
   }
 }
 ```
 
-Cursor resolves `${env:HMD_API_ACCESS_TOKEN}` from the environment it inherits when it starts (not from secrets embedded in `mcp.json`). Set the variable in your **shell profile** (for example `~/.zshrc` or `~/.bashrc`) and fully restart Cursor, or define it in your **OS user / system environment** so GUI-launched Cursor sees it—same idea as Cursor’s MCP docs: use config interpolation in `mcp.json` and keep real values in the environment. Use the same token as in [Configure HackMD CLI authentication](#4-configure-hackmd-cli-authentication) below.
+Cursor names plugin MCP servers with a `plugin-` prefix, so this one appears as `plugin-hackmd-hackmd` in Customize and in approval prompts.
 
-To sanity-check the remote command from a terminal (shell variable, not Cursor interpolation):
+1. Open **Customize** and check that the HackMD MCP server is listed and turned on.
+2. Ask the agent to do something with HackMD, for example "show my HackMD profile" (the `get-me` tool) or "list my HackMD notes".
+3. When Cursor opens the HackMD sign-in page in your browser, sign in and approve access. If you close that page without approving, the server stays unauthorized.
+
+The OAuth connection doesn't use an API token. Don't add `Authorization` headers, `mcp-remote`, or `HMD_API_ACCESS_TOKEN` to the plugin's MCP config.
+
+The bundled server signs in to HackMD Cloud (hackmd.io). For a HackMD EE instance, use the [HackMD CLI](#hackmd-cli-optional) with `HMD_API_ENDPOINT_URL`.
+
+More detail: [HackMD MCP Server Setup](https://hackmd.io/@docs/mcp-server-setup).
+
+## Local Testing
+
+Cursor loads local plugins from `~/.cursor/plugins/local/<plugin-name>/`. Name the folder after the `name` field in `.cursor-plugin/plugin.json`, which is `hackmd` for this repo.
+
+From your clone, **copy** the repository into that folder:
+
+```bash
+mkdir -p ~/.cursor/plugins/local
+rm -rf ~/.cursor/plugins/local/hackmd
+rsync -a --exclude='.git' ./ ~/.cursor/plugins/local/hackmd/
+```
+
+If you don't have `rsync`, use `cp` instead:
+
+```bash
+mkdir -p ~/.cursor/plugins/local
+rm -rf ~/.cursor/plugins/local/hackmd
+cp -R . ~/.cursor/plugins/local/hackmd
+rm -rf ~/.cursor/plugins/local/hackmd/.git
+```
+
+Don't symlink your clone into `~/.cursor/plugins/local`. Cursor loads a symlink there only if its target is inside that folder, and it skips symlinks that point to a repository somewhere else on disk. Copy the files again whenever you change them.
+
+Restart Cursor, or run **Developer: Reload Window**. Then open **Customize** and check that:
+
+- the `hackmd` plugin appears and `logo.png` shows correctly
+- the HackMD MCP server (`plugin-hackmd-hackmd`) is listed, and you can complete the OAuth sign-in from [Connect HackMD MCP](#connect-hackmd-mcp-oauth)
+- the agent can run the `get-me` tool and get your HackMD profile back
+- the `hackmd-cli` skill, the `setup-hackmd` command, and the `hackmd-workflow` rule are available
+
+If the plugin doesn't show up:
+
+- If HackMD is already installed from the Marketplace, uninstall it first. A Marketplace install takes precedence over a local copy with the same name.
+- On Enterprise plans, an admin must turn on **Allow Local Plugin Imports**.
+
+## Manual MCP Setup (API token, alternative)
+
+Use this only if you can't use OAuth, for example on a headless machine or in an environment without a browser. It runs the server through `mcp-remote` with a personal API token, and you configure it in your **user-level** `~/.cursor/mcp.json`, not in this plugin.
+
+1. Create an API token at [hackmd.io/settings#api](https://hackmd.io/settings#api).
+2. Set `HMD_API_ACCESS_TOKEN` in the environment Cursor starts with, for example in `~/.zshrc` or `~/.bashrc` or in your OS user environment. Then quit and reopen Cursor.
+3. Add this entry to `~/.cursor/mcp.json`:
+
+   ```json
+   {
+     "mcpServers": {
+       "hackmd-token": {
+         "command": "npx",
+         "args": [
+           "mcp-remote@0.1.38",
+           "https://mcp.hackmd.io/",
+           "--header",
+           "Authorization:Bearer ${env:HMD_API_ACCESS_TOKEN}"
+         ]
+       }
+     }
+   }
+   ```
+
+   `${env:...}` is Cursor's syntax for reading an environment variable in a user `mcp.json`. The file holds only the variable name, never the token.
+
+4. In **Customize**, turn off the plugin's OAuth server (`plugin-hackmd-hackmd`) so you don't have two HackMD servers.
+
+To check the command from a terminal:
 
 ```bash
 export HMD_API_ACCESS_TOKEN=YOUR_TOKEN
 npx mcp-remote@0.1.38 https://mcp.hackmd.io/ --header "Authorization:Bearer $HMD_API_ACCESS_TOKEN"
 ```
 
-### 3. Install HackMD CLI
+Never commit a real token or paste it into tracked files.
+
+## HackMD CLI (optional)
+
+You don't need the CLI for MCP. It's useful for shell scripting, exports, and HackMD EE endpoints.
 
 ```bash
 npm install -g @hackmd/hackmd-cli
-```
-
-### 4. Configure HackMD CLI authentication
-
-Use either interactive login:
-
-```bash
-hackmd-cli login
-```
-
-or an environment variable:
-
-```bash
-export HMD_API_ACCESS_TOKEN=YOUR_TOKEN
+hackmd-cli login        # or: export HMD_API_ACCESS_TOKEN=YOUR_TOKEN
+hackmd-cli whoami
+hackmd-cli notes
 ```
 
 For HackMD EE instances, also set:
@@ -137,40 +157,35 @@ For HackMD EE instances, also set:
 export HMD_API_ENDPOINT_URL=https://your.hackmd-ee.endpoint
 ```
 
-### 5. Verify CLI and MCP access
-
-```bash
-hackmd-cli whoami
-hackmd-cli notes
-```
-
-In Cursor, confirm the `hackmd-mcp` server appears from your user MCP configuration.
+CLI credentials and the MCP OAuth sign-in are separate. Signing in to one doesn't sign you in to the other.
 
 ## Included Components
 
 ### Skill: `hackmd-cli`
 
-Use this when working with HackMD notes via CLI, including personal notes, team notes, exports, and scripting workflows.
+For working with HackMD notes through the CLI: personal notes, team notes, exports, and scripts.
 
 ### Command: `setup-hackmd`
 
-Use this command to guide users through:
+Walks you through:
 
-- installing the HackMD CLI
-- configuring authentication
-- copying the MCP template into user-local Cursor config
-- verifying CLI and MCP access
+- connecting the HackMD MCP server with OAuth
+- optionally installing the HackMD CLI and logging in
+- checking that MCP (and the CLI, if installed) works
 
 ### Rule: `hackmd-workflow`
 
-Use this rule for HackMD-related work so Cursor prefers the HackMD CLI workflow, distinguishes personal notes from team notes, and keeps auth placeholders out of committed examples.
+Guidance for HackMD-related work. It uses MCP with OAuth for notes in chat, uses the CLI for shell workflows, and keeps tokens out of MCP config and committed files.
 
-## Notes
+## Terms and Privacy
 
-- The plugin manifest references the local `logo.png` asset.
-- The repo `.mcp.json` is a template with `${env:HMD_API_ACCESS_TOKEN}` interpolation and a pinned `mcp-remote` version.
-- Keep tokens in the environment, not in committed or pasted config files.
-- The plugin keeps scope narrow so it can be extended safely later.
-- The `hackmd-cli` skill adapts the upstream HackMD CLI guide for Cursor plugin packaging.
+The HackMD service that this plugin connects to is covered by:
 
-Upstream reference: [HackMD CLI skill](https://github.com/hackmdio/hackmd-cli/blob/develop/hackmd-cli/SKILL.md)
+- [HackMD Terms of Service](https://hackmd.io/s/terms)
+- [HackMD Privacy Policy](https://hackmd.io/s/privacy)
+
+## License
+
+[MIT](LICENSE)
+
+Upstream CLI skill: [HackMD CLI skill](https://github.com/hackmdio/hackmd-cli/blob/develop/hackmd-cli/SKILL.md)
